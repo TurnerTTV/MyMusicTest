@@ -37,7 +37,7 @@ public class PlaybackService extends Service {
     public void onTaskRemoved(Intent rootIntent) { // appli balayée des récents : arrêt immédiat
         stopForeground(true);
         stopSelf();
-        Process.killProcess(Process.myPid());
+   android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override
