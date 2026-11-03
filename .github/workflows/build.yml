@@ -10,6 +10,18 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 21 }
       - run: npm install
+      - run: rm -rf android && npx cap add android
+      - name: Ajout du code natif
+        run: |
+          cp native/*.java android/app/src/main/java/com/mymusic/app/
+          python3 - <<'PY'
+          p='android/app/src/main/AndroidManifest.xml'
+          s=open(p).read()
+          perms=''.join('<uses-permission android:name="android.permission.%s" />\n'%x for x in ['FOREGROUND_SERVICE','FOREGROUND_SERVICE_MEDIA_PLAYBACK','POST_NOTIFICATIONS','WAKE_LOCK'])
+          s=s.replace('</manifest>',perms+'</manifest>')
+          s=s.replace('</application>','<service android:name=".PlaybackService" android:exported="false" android:foregroundServiceType="mediaPlayback" android:stopWithTask="false" /></application>')
+          open(p,'w').write(s)
+          PY
       - run: npx cap sync android
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
