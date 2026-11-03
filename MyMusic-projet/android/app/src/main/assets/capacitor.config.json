@@ -1,0 +1,9 @@
+{
+	"appId": "com.mymusic.app",
+	"appName": "MyMusic",
+	"webDir": "www",
+	"server": {
+		"hostname": "mymusic-app.com",
+		"androidScheme": "https"
+	}
+}
